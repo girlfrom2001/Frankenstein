@@ -3,3 +3,5 @@
 import RPi.GPIO as GPIO
 import time
 from w1thermsensor import W1ThermSensor
+import os
+import sys
