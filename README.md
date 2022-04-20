@@ -22,29 +22,44 @@ touchstatus = False
 GPIO.input(22)==True
 time.sleep(2)
 
-def on():
+global i
+i = GPIO.input(23) = touch sensor
 
-GPIO.output(26, GPIO.HIGH) #turns LED on
-time.sleep(0.5)
-#GPIO.output(26, GPIO.LOW)
-print("Program activated...")
+def LEDon():
+  GPIO.output(26, GPIO.HIGH)
+  time.sleep(0.5)
+#   GPIO.output(26, GPIO.LOW) do not need this because the light will be on 
 
-def off():
+def LEDoff():
+  time.sleep(0.5)
+  GPIO.output(26, GPIO.LOW) 
+  
+def buzzerOFF():
+    B_pin = 6
+    GPIO.output(B_pin,GPIO.HIGH)
 
-GPIO.output(26, GPIO.LOW) #turn LED off
-print("Program deactivated...")
-GPIO.out(6, GPIO.HIGH)
-time.sleep(0.5) #turns buzzer off
+def buzzerON():
+     B_pin = 6
+     GPIO.output(B_pin,GPIO.LOW)  
 
-
-
-
-
-
-
+if (i == 1): #high output from sensor
+    LEDon()
+    print("System activated...")
+    time.sleep(0.5)      
+      
+while LEDon() == True:
+    temperature = sensor.get_temperature()
+    print("The temperature is %s celsius" % temperature)
+    time.sleep(.1)
+    if temperature >= 25:
+        buzzerON()
+    else:
+        LEDoff()
+        buzzerOFF()
 
 if (GPIO.input(Trg)==True): #input from touch sensor turns off the program
-  GPIO.output (LED,GPIO.LOW) #turn the light off
-  print("System shutting down...")
-  time.sleep(1)
-  sys.exit()
+    LEDoff() #turn the light off
+    buzzerOFF() #turn buzzer off
+    print("System shutting down...")
+    time.sleep(1)
+    sys.exit()
